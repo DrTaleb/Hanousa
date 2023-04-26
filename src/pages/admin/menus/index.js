@@ -50,7 +50,6 @@ export default function Menus() {
             icon: 'warning',
             showCancelButton: true,
             cancelButtonText: "خیر",
-            confirmButtonColor: 'var(--main-purple)',
             cancelButtonColor: '#d33',
             confirmButtonText: 'بله'
         }).then(async (result) => {

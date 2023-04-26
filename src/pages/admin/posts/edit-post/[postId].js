@@ -62,7 +62,7 @@ export default function EditPost({data}) {
                     icon: 'success',
                     text: "پست آپدیت شد",
                 })
-                router.push("/admin/sliders")
+                router.push("/admin/posts")
             }else {
                 Nprogress.done()
                 await Swal.fire({
@@ -140,12 +140,21 @@ export default function EditPost({data}) {
         </div>
     );
 }
-export async function getServerSideProps(context){
-    const {params} = context
-    const layoutResponse = await fetch(`${process.env.LOCAL_URL}/api/admin/posts/single-post/${params.postId}`)
-    const data = await layoutResponse.json()
-    return {
-        props: {data}
-    }
-}
 
+export async function getServerSideProps (context){
+    const {params,req} = context
+    const userToken = req.cookies.userToken
+    const response = await fetch(`${process.env.SERVER_URL}/page/posts/${params.postId}`,{
+        method : "GET",
+        credentials : 'include',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization' : `Token ${userToken}`
+        },
+    })
+    const data = await response.json()
+    return{
+        props : {data}
+    }
+
+}

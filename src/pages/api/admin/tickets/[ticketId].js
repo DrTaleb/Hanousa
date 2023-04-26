@@ -11,7 +11,6 @@ export default async function Handler(req, res) {
                 }
             })
             const data = await dataResponse.json()
-            console.log(data)
             res.status(200).json(data)
         }catch {
             res.status(500).json({massage : "ارور سرور"})

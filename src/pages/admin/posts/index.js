@@ -61,10 +61,10 @@ export default function Posts() {
             if (result.isConfirmed) {
                 Nprogress.start()
                 try {
-                    fetch(`${process.env.LOCAL_URL}/api/admin/sliders/delete/${id}`, {
+                    fetch(`${process.env.LOCAL_URL}/api/admin/posts/delete-post/${id}`, {
                         method : "DELETE"
                     }).then(res => res.json()).then(data => {
-                        if (data.message === "slide deleted"){
+                        if (data.message === "post deleted"){
                             setGetData(prev => !prev)
                             Nprogress.done()
                             Swal.fire(
@@ -86,7 +86,7 @@ export default function Posts() {
                     Swal.fire(
                         '',
                         "مشکلی در سرور وجود دارد دوباره تلاش کنید",
-                        'success'
+                        'error'
                     )
                 }
             }

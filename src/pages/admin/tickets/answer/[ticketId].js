@@ -45,7 +45,7 @@ export default function Answer({data}) {
             })
         } else {
             try {
-                const res = await fetch(`${process.env.SERVER_URL}/api/admin/tickets/${router.query.ticketId}`, {
+                const res = await fetch(`${process.env.LOCAL_URL}/api/admin/tickets/${router.query.ticketId}`, {
                     method: "POST",
                     body : JSON.stringify({
                         id : adminId,

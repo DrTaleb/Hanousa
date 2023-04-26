@@ -19,8 +19,10 @@ export default async function Handler(req, res) {
                 await myFormData.append("title", fields.title)
                 await myFormData.append("text", fields.text)
                 await myFormData.append("status", fields.status)
-                myFormData.append("image", fs.createReadStream(files.image.filepath), `${files.image.originalFilename}`)
-                const data = await axios.put(`${process.env.SERVER_URL}/page/slides/${req.query.sliderId}`, myFormData, {
+                if (files.image){
+                    myFormData.append("image", fs.createReadStream(files.image.filepath), `${files.image.originalFilename}`)
+                }
+                const data = await axios.put(`${process.env.SERVER_URL}/page/slides/${req.query.sliderId}/`, myFormData, {
                     headers: {
                         'Authorization': `Token ${userToken}`,
                         'Content-Type': 'multipart/form-data'
@@ -28,7 +30,7 @@ export default async function Handler(req, res) {
                 })
                 res.status(200).json(data.data)
             })
-        }catch {
+        }catch(err) {
             res.status(500).json({massage : "ارور سرور"})
         }
     } else {

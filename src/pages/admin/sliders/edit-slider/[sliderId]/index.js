@@ -77,20 +77,21 @@ export default function SliderId({data}) {
             await formData.append("title", title);
             await formData.append("text", text)
             await formData.append("status", status)
-            await formData.append("image", file)
+            if (file){
+                await formData.append("image", file)
+            }
             try {
                 const res = await axios.put(`${process.env.LOCAL_URL}/api/admin/sliders/edit/${router.query.sliderId}`,formData,{headers : {
                             'Content-Type': 'multipart/form-data',
                         }
                     }
                 )
-                console.log(res)
                 Nprogress.done()
-                if (res.data.message === "slide created"){
+                if (res.data.message === "slide changed"){
                     Nprogress.done()
                     await Swal.fire({
                         icon: 'success',
-                        text: "اسلاید تشکیل شد",
+                        text: "اسلاید آپدیت شد",
                     })
                     router.push("/admin/sliders")
                 }else {

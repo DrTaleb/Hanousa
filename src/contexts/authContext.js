@@ -9,10 +9,14 @@ export const AuthProvider = ({children}) => {
     const [userData , setUserData] = useState({});
     const getUserData = async () => {
         let massage;
-        await fetch(`${process.env.LOCAL_URL}/api/auth/userInfo`, {
-            method: "GET",
-        }).then(res => res.json()).then(data => massage = data)
-        await setUserData(massage)
+        try {
+            await fetch(`${process.env.LOCAL_URL}/api/auth/userInfo`, {
+                method: "GET",
+            }).then(res => res.json()).then(data => massage = data)
+            await setUserData(massage)
+        }catch {
+            setUserData({})
+        }
     }
 
     const signup = async (mobile,otp,password1,password2) => {

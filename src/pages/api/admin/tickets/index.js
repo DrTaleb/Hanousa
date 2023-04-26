@@ -1,7 +1,6 @@
 
 export default async function Handler(req, res) {
     const userToken = req.cookies.userToken
-    console.log("vsfvvsfvfv")
     if (req.method === "GET"){
        try {
            const dataResponse = await fetch(`${process.env.SERVER_URL}/page/tickets/`,{
