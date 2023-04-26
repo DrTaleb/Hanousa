@@ -5,9 +5,8 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import {Fragment, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditOutlineRoundedIcon from '@mui/icons-material/ModeEditOutlineRounded';
@@ -16,6 +15,7 @@ import {Button} from "@mui/material";
 import Swal from "sweetalert2";
 import Link from "next/link";
 import {useRouter} from "next/router";
+import Nprogress from "nprogress";
 
 const columns = [
     {id: 'id', label: 'آیدی', minWidth: 170},
@@ -26,24 +26,13 @@ const columns = [
 ];
 
 
-export default function sliders() {
+export default function Sliders() {
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const router = useRouter()
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [DATA,setDATA] = useState([])
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [page, setPage] = useState(0);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [getData, setGetData] = useState(false)
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect( ()=>{
-         fetch(`http://localhost:4000/sliders`)
+         fetch(`${process.env.LOCAL_URL}/api/admin/sliders`)
             .then(res => res.json())
             .then(data => setDATA(data))
     }, [getData])
@@ -53,15 +42,11 @@ export default function sliders() {
     }
 
     const rows = [];
-    DATA.map(item => rows.push(createData(`${item.id}`, `${item.name}`, `${item.status === 1 ? "فعال" : "غیر فعال"}`, `${item.link_type}`),))
+    DATA.map(item => rows.push(createData(`${item.id}`, `${item.title}`, `${item.status === 1 ? "فعال" : "غیر فعال"}`, `${item.link_type}`),))
 
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target);
-        setPage(0);
-    };
     const viewHandler = (id) => {
-        console.log(id)
+        router.push(`/admin/sliders/view/${id}`)
     }
     const editHandler = (id) => {
        router.push(`/admin/sliders/edit-slider/${id}`)
@@ -72,33 +57,50 @@ export default function sliders() {
             icon: 'warning',
             showCancelButton: true,
             cancelButtonText: "خیر",
-            confirmButtonColor: 'var(--main-purple)',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: 'red',
             confirmButtonText: 'بله'
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:4000/sliders/${id}`, {
-                    method : "DELETE"
-                }).then(res => console.log(res))
-                setGetData(prev => !prev)
-                Swal.fire(
-                    '',
-                    "حذف با موفقیت انجام شد !",
-                    'success'
-                )
+                Nprogress.start()
+                try {
+                    fetch(`${process.env.LOCAL_URL}/api/admin/sliders/delete/${id}`, {
+                        method : "DELETE"
+                    }).then(res => res.json()).then(data => {
+                        if (data.message === "slide deleted"){
+                            setGetData(prev => !prev)
+                            Nprogress.done()
+                            Swal.fire(
+                                '',
+                                "حذف با موفقیت انجام شد !",
+                                'success'
+                            )
+                        }else {
+                            Nprogress.done()
+                            Swal.fire(
+                                '',
+                                "مشکلی وجود دارد دوباره تلاش کنید",
+                                'success'
+                            )
+                        }
+                    })
+                }catch {
+                    Nprogress.done()
+                    Swal.fire(
+                        '',
+                        "مشکلی در سرور وجود دارد دوباره تلاش کنید",
+                        'success'
+                    )
+                }
             }
         })
-    }
-    const handleShow = (id)=>{
-        router.push(`/admin/sliders/view/${id}`)
     }
 
 
     return (
         <div className={"px-4"}>
-            <Paper className={"p-lg-3"} sx={{width: '100%', overflow: 'hidden' , boxShadow: "0 0 1rem rgba(0, 0, 0, .1)"}}>
+            <Paper className={"p-3"} sx={{width: '100%', overflow: 'hidden' , boxShadow: "0 0 1rem rgba(0, 0, 0, .1)"}}>
                 <Link href={"/admin/sliders/add-slider"}>
-                    <Button className={"ps-2"} variant={"contained"} >افزودن اسلایدر</Button>
+                    <Button className={"ps-2"} variant={"contained"} color={"success"}>افزودن اسلایدر</Button>
                 </Link>
                 <TableContainer sx={{maxHeight: 600}}>
                     <Table stickyHeader aria-label="sticky table">
@@ -119,11 +121,9 @@ export default function sliders() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row) => {
+                            {rows.map((row) => {
                                     return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                                             {columns.map((column) => {
                                                 const value = row[column.id];
                                                 return (
@@ -134,9 +134,9 @@ export default function sliders() {
                                                     </TableCell>
                                                 );
                                             })}
-                                            <TableCell align={"left"}>
+                                            <TableCell align={"left"} sx={{minWidth : "200px"}}>
                                                 <IconButton color={"info"}
-                                                            onClick={() => handleShow(row.id)}
+                                                            onClick={() => viewHandler(row.id)}
                                                 ><RemoveRedEyeRoundedIcon/>
                                                 </IconButton>
                                                 <IconButton color={"warning"}
@@ -157,16 +157,6 @@ export default function sliders() {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[10, 25, 100]}
-                    component="div"
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    labelRowsPerPage={"تعداد آیتم در هر صفحه"}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
             </Paper>
         </div>
     );

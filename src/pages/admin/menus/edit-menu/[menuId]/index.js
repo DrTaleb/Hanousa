@@ -2,7 +2,7 @@ import {Col} from "react-bootstrap";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import {useEffect, useState} from "react";
-import {FileUploader} from "react-drag-drop-files";
+// import {FileUploader} from "react-drag-drop-files";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import {Breadcrumbs, Button} from "@mui/material";
@@ -10,58 +10,74 @@ import Container from "react-bootstrap/Container";
 import Swal from "sweetalert2";
 import {useRouter} from "next/router";
 
-export default function editSlider({data}) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+export default function EditMenu({data}) {
     const router = useRouter()
+    const menuId = router.query.menuId
     const breadcrumbs = [
-        <Link underline="hover" key="1" color="inherit" href={"/admin/sliders"}>
+        <Link underline="hover" key="1" color="inherit" href={"/admin/menus"}>
             منو
         </Link>,
         <Typography key="3" color="text.primary" className={"color-my-purple"}>
-            ویرایش منو
+            افزودن منو
         </Typography>,
     ];
 
-    const statusList = [
-        {
-            value: 1,
-            label: "فعال"
-        },
-        {
-            value: 0,
-            label: "غیر فعال"
-        }
-    ]
     const linkTypeList = [
         {
-            value: "1",
-            label: "منو"
+            value: "header",
+            label: "هدر"
         },
         {
-            value: "2",
-            label: "زیر منو"
+            value: "footer",
+            label: "فوتر"
         }
     ]
-    const menuList = [
 
-    ]
+    const [menus , setMenus] = useState([{
+        label : "بدون والد",
+        value : 0
+    }])
+
+
     // form input -----------------------------------
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [name, setName] = useState(data.title)
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [nameError, setNameError] = useState(!data.title.length)
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [link, setLink] = useState(data.link)
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [linkError, setLinkError] = useState(!data.link.length)
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [status, setStatus] = useState(data.status)
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [statusError, setStatusError] = useState(false)
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [type, setType] = useState(data.type)
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-
+    const [name, setName] = useState("")
+    const [nameError, setNameError] = useState(false)
+    const [link, setLink] = useState("")
+    const [linkError, setLinkError] = useState(false)
+    const [type, setType] = useState("")
+    const [parent, setParent] = useState(0)
+    const [parentDisable , setParentDisable ] = useState(false)
+    let selectedMenu = data.menus.find(item => item.id == menuId);
+    useEffect(()=> {
+        setName(selectedMenu.title)
+        setLink(selectedMenu.link)
+        setType(selectedMenu.type)
+        if (selectedMenu.type === "header"){
+            setMenus([{
+                label : "بدون والد",
+                value : 0
+            }])
+            data.menus.filter(item => item.type === "header" && item.parent_id === 0).map(item => {
+                setMenus((prevState)=> [...prevState ,{
+                    label : item.title,value : item.id
+                }
+                ])
+            })
+            setParent(selectedMenu.parent_id)
+        }else {
+            setMenus([{
+                label : "بدون والد",
+                value : 0
+            }])
+            data.menus.filter(item => item.type === "footer" && item.parent_id === 0).map(item => {
+                setMenus((prevState)=> [...prevState ,{
+                    label : item.title,value : item.id
+                }
+                ])
+            })
+            setParent(selectedMenu.parent_id)
+        }
+    },[])
     const nameHandler = (event) => {
         setName(event.target.value)
         event.target.value.length ? setNameError(false) : setNameError(true)
@@ -70,86 +86,78 @@ export default function editSlider({data}) {
         setLink(event.target.value)
         event.target.value.length ? setLinkError(false) : setLinkError(true)
     }
-    const statusHandler = (event) => {
-        setStatus(event.target.value)
-        event.target.value === 0 || event.target.value === 1 ? setStatusError(false) : setStatusError(true)
-    };
     const typeHandler = (event) => {
         setType(event.target.value)
+        if (event.target.value === "header"){
+            setMenus([{
+                label : "بدون والد",
+                value : 0
+            }])
+            data.menus.filter(item => item.type === "header" && item.parent_id === 0).map(item => {
+                setMenus((prevState)=> [...prevState ,{
+                    label : item.title,value : item.id
+                }
+                ])
+            })
+            setParentDisable(false)
+            console.log(menus)
+        }else {
+            setMenus([{
+                label : "بدون والد",
+                value : 0
+            }])
+            data.menus.filter(item => item.type === "footer" && item.parent_id === 0).map(item => {
+                setMenus((prevState)=> [...prevState ,{
+                    label : item.title,value : item.id
+                }
+                ])
+            })
+            setParentDisable(false)
+        }
     };
-
+    const parentHandler = (event) => {
+        setParent(event.target.value)
+    };
 
     const submitHandler = async (event) => {
         event.preventDefault()
-        if (nameError || linkError || statusError) {
+        if (nameError || linkError) {
             Swal.fire({
                 icon: 'error',
                 text: "لطفا تمام فیلد ها را پر کنید",
             })
-        } else if (!file) {
-            await fetch(`http://localhost:4000/sliders/${data.id}`, {
-                method: "PUT",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: name,
-                    link: link,
-                    linkType: linkType,
-                    status: status,
-                })
-            }).then(res => {
-                if (res.status === 200) {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        text: 'اسلاید با موفقیت ثبت شد',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                    router.push("/admin/sliders")
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        text: 'مشکلی پیش آمده لطفا دوباره تلاش کنید',
-                    })
-                }
-            })
         } else {
-            await fetch(`http://localhost:4000/sliders/${data.id}`, {
-                method: "PUT",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: name,
-                    link: link,
-                    linkType: linkType,
-                    status: status,
-                    image : file.name
-                })
-            }).then(res => {
-                if (res.status === 200) {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        text: 'اسلاید با موفقیت ثبت شد',
-                        showConfirmButton: false,
-                        timer: 1500
+            try {
+                const res = await fetch(`${process.env.LOCAL_URL}/api/admin/menus/${selectedMenu.id}`, {
+                    method: "PUT",
+                    body: JSON.stringify({
+                        title: name,
+                        link: link,
+                        parent_id: parent,
+                        type : type,
                     })
-                    router.push("/admin/sliders")
-                } else {
+                })
+                const data = await res.json()
+                if (data.message === "menu changed"){
+                    Swal.fire({
+                        icon: 'success',
+                        text: "منو تغییر کرد",
+                    })
+                    router.push("/admin/menus")
+                }else {
                     Swal.fire({
                         icon: 'error',
-                        text: 'مشکلی پیش آمده لطفا دوباره تلاش کنید',
+                        text: "مشکلی پیش آمده لطفا دوباره تلاش کنید",
                     })
                 }
-            })
+            }catch (err){
+                Swal.fire({
+                    icon: 'error',
+                    text: "مشکلی در سرور پیش آمده",
+                })
+            }
         }
     }
-    const fileTypes = ["JPG", "PNG", "WEBP"];
     return (
         <Container>
             <Breadcrumbs className={"ms-4"} separator="›" aria-label="breadcrumb">
@@ -157,7 +165,7 @@ export default function editSlider({data}) {
             </Breadcrumbs>
             <div className={"d-flex flex-row justify-content-center"}>
 
-                <Col xs={11} sm={11} md={8} lg={6} xl={5} className={"content"}>
+                <Col xs={11} sm={11} md={8} lg={6} xl={5} className={"bg-white rounded-3 shadow"}>
                     <form>
                         <div className={"d-flex flex-column align-items-center gap-3 py-5"}>
                             <TextField className={"w-75"}
@@ -178,13 +186,12 @@ export default function editSlider({data}) {
                             />
                             <TextField
                                 select
-                                label="وضعیت"
+                                label="دسته بندی"
                                 className={"w-75"}
-                                onChange={statusHandler}
-                                value={status}
-                                error={statusError}
+                                value={type}
+                                onChange={typeHandler}
                             >
-                                {statusList.map((option) => (
+                                {linkTypeList.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
                                         {option.label}
                                     </MenuItem>
@@ -192,12 +199,13 @@ export default function editSlider({data}) {
                             </TextField>
                             <TextField
                                 select
-                                label="دسته بندی"
+                                label="والد"
                                 className={"w-75"}
-                                value={type}
-                                onChange={typeHandler}
+                                value={parent}
+                                onChange={parentHandler}
+                                disabled={parentDisable}
                             >
-                                {linkTypeList.map((option) => (
+                                {menus.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
                                         {option.label}
                                     </MenuItem>
@@ -213,18 +221,12 @@ export default function editSlider({data}) {
     )
 }
 
-export async function getServerSideProps(context) {
-    const {params} = context
-    const dataRes = await fetch(`http://localhost:4000/menu/${params.menuId}`)
-    console.log(params)
-    const data = await dataRes.json()
-    if (!data) {
-        return {
-            notFound: true
-        }
-    }
+export async function getServerSideProps(){
+    const layoutResponse = await fetch(`${process.env.SERVER_URL}/layout/?format=json`)
+    const data = await layoutResponse.json()
     return {
         props: {data}
     }
-
 }
+
+

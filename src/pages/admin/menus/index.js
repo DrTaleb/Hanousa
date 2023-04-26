@@ -5,13 +5,11 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import {Fragment, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditOutlineRoundedIcon from '@mui/icons-material/ModeEditOutlineRounded';
-import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import {Button} from "@mui/material";
 import Swal from "sweetalert2";
 import Link from "next/link";
@@ -22,46 +20,27 @@ const columns = [
     {id: 'title', label: 'نام', minWidth: 170, align: "left"},
     {id: 'link', label: 'لینک', minWidth: 170, align: 'left',},
     {id: 'parentId', label: 'والد', minWidth: 170, align: 'left',},
-    {id: 'status', label: 'وضعیت', minWidth: 170, align: 'left',},
 ];
 
-export default function sliders() {
+export default function Menus() {
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const router = useRouter()
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [DATA,setDATA] = useState([])
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [page, setPage] = useState(0);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [getData, setGetData] = useState(false)
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+
     useEffect( ()=>{
-        fetch(`http://localhost:4000/menu`)
+        fetch(`${process.env.LOCAL_URL}/api/admin/menus`)
             .then(res => res.json())
             .then(data => setDATA(data))
     }, [getData])
-
-    function createData(id, title, link, parentId , status, options) {
-        return {id, title,link, parentId, status, options};
+    function createData(id, title, link, parentId , options) {
+        return {id, title,link, parentId, options};
     }
 
     const rows = [];
-    DATA.map(item => rows.push(createData(`${item.id}`, `${item.title}`,`${item.link}`, `${item.parent_id}`,  `${item.status === 1 ? "فعال" : "غیر فعال"}`),))
+    DATA.map(item => rows.push(createData(`${item.id}`, `${item.title}`,`${item.link}`, `${item.parent_name}`)))
 
-    console.log(DATA)
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target);
-        setPage(0);
-    };
-    const viewHandler = (id) => {
-        console.log(id)
-    }
+
     const editHandler = (id) => {
         router.push(`/admin/menus/edit-menu/${id}`)
     }
@@ -74,17 +53,34 @@ export default function sliders() {
             confirmButtonColor: 'var(--main-purple)',
             cancelButtonColor: '#d33',
             confirmButtonText: 'بله'
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:4000/menu/${id}`, {
-                    method : "DELETE"
-                }).then(res => console.log(res))
-                setGetData(prev => !prev)
-                Swal.fire(
-                    '',
-                    "حذف با موفقیت انجام شد !",
-                    'success'
-                )
+                try {
+                    const res = await fetch(`${process.env.LOCAL_URL}/api/admin/menus/${id}`, {
+                        method: "DELETE"
+                    })
+                    const data = await res.json()
+                    if (data.message === "menu deleted"){
+                        setGetData(prev => !prev)
+                        Swal.fire(
+                            '',
+                            "حذف با موفقیت انجام شد !",
+                            'success'
+                        )
+                    }else {
+                        Swal.fire(
+                            '',
+                            "مشکلی پیش آمده دوباره تلاش کنید",
+                            'error'
+                        )
+                    }
+                }catch {
+                    Swal.fire(
+                        '',
+                        "مشکلی در سرور پیش آمده دوباره تلاش کنید",
+                        'error'
+                    )
+                }
             }
         })
     }
@@ -93,8 +89,8 @@ export default function sliders() {
     return (
         <div className={"px-4"}>
             <Paper className={"p-3"} sx={{width: '100%', overflow: 'hidden' , boxShadow: "0 0 1rem rgba(0, 0, 0, .1)"}}>
-                <Link href={"/admin/sliders/add-slider"}>
-                    <Button className={"ps-2"} variant={"contained"} >افزودن منو</Button>
+                <Link href={"/admin/menus/add-menu"}>
+                    <Button className={"ps-2"} variant={"contained"} color={"success"} >افزودن منو</Button>
                 </Link>
                 <TableContainer sx={{maxHeight: 600}}>
                     <Table stickyHeader aria-label="sticky table">
@@ -115,11 +111,9 @@ export default function sliders() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row) => {
+                            {rows.map((row) => {
                                     return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                                             {columns.map((column) => {
                                                 const value = row[column.id];
                                                 return (
@@ -130,7 +124,7 @@ export default function sliders() {
                                                     </TableCell>
                                                 );
                                             })}
-                                            <TableCell align={"left"}>
+                                            <TableCell align={"left"}  sx={{minWidth : "200px"}}>
                                                 <IconButton color={"warning"}
                                                             onClick={() => editHandler(row.id)}
                                                 >
@@ -149,16 +143,6 @@ export default function sliders() {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[10, 25, 100]}
-                    component="div"
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    labelRowsPerPage={"تعداد آیتم در هر صفحه"}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
             </Paper>
         </div>
     );

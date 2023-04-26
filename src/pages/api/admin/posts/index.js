@@ -2,7 +2,7 @@
 export default async function Handler(req, res) {
     const userToken = req.cookies.userToken
     if (req.method === "GET"){
-        const dataResponse = await fetch(`https://server.hanousa.ir/page/posts/${req.query.postId ? req.query.postId : ""}`,{
+        const dataResponse = await fetch(`${process.env.SERVER_URL}/page/posts/`,{
             method : "GET",
             headers : {
                 'Content-Type': 'application/json; charset=UTF-8',

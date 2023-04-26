@@ -1,8 +1,6 @@
 import {Col} from "react-bootstrap";
 import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import {useEffect, useState} from "react";
-import {FileUploader} from "react-drag-drop-files";
+import {useContext, useState} from "react";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import {Breadcrumbs, Button} from "@mui/material";
@@ -11,112 +9,66 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import Nprogress from "nprogress";
 import {useRouter} from "next/router";
+import AuthContext from "@/contexts/authContext";
 
-export default function addSlider() {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+export default function Answer({data}) {
+
+    const {userData} = useContext(AuthContext)
+    const adminId = userData.user_id
     const router = useRouter()
     const breadcrumbs = [
-        <Link className={"text-decoration-none"} underline="hover" key="1" color="inherit" href={"/admin/sliders"}>
-            اسلایدر ها
+        <Link className={"text-decoration-none"} underline="hover" key="1" color="inherit" href={"/admin/tickets"}>
+            تیکت ها
         </Link>,
         <Typography key="3" color="text.primary" className={"color-my-purple"}>
-            ویرایش اسلایدر
+            پاسخ به تیکت
         </Typography>,
     ];
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [data, setData] = useState({})
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect( ()=>{
-        fetch(`http://localhost:3000/api/admin/sliders`)
-            .then(res => res.json())
-            .then(data => setData(data))
-    }, [])
 
-    console.log(router)
 
-    const statusList = [
-        {
-            value: 1,
-            label: "فعال"
-        },
-        {
-            value: 0,
-            label: "غیر فعال"
-        }
-    ]
     // form input -----------------------------------
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [title, setTitle] = useState("")
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [titleError, setTitleError] = useState(true)
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [text, setText] = useState("")
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [textError, setTextError] = useState(true)
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [status, setStatus] = useState("")
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [statusError, setStatusError] = useState(true)
-    const titleHandler = (event) => {
-        setTitle(event.target.value)
-        event.target.value.length ? setTitleError(false) : setTitleError(true)
-    }
+    const [text, setText] = useState(data.answer ? data.answer : "")
+    const [textError, setTextError] = useState(false)
+
     const textHandler = (event) => {
         setText(event.target.value)
         event.target.value.length ? setTextError(false) : setTextError(true)
     }
-    const statusHandler = (event) => {
-        setStatus(event.target.value)
-        event.target.value === 0 || event.target.value === 1 ? setStatusError(false) : setStatusError(true)
-    };
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [file, setFile] = useState(null);
-    const formData = new FormData();
-    const handleChange = (file) => {
-        setFile(file);
-    };
 
     const submitHandler = async (event) => {
         event.preventDefault()
         Nprogress.start()
-        if (titleError || textError || statusError) {
+        if (textError) {
             await Swal.fire({
                 icon: 'error',
-                text: "لطفا تمام فیلد ها را پر کنید",
-            })
-        } else if (!file) {
-            await Swal.fire({
-                icon: 'error',
-                text: "لطفا فایل را وارد کنید",
+                text: "لطفا پاسخ را پر کنید",
             })
         } else {
-
-            await formData.append("title", title);
-            await formData.append("text", text)
-            await formData.append("status", status)
-            await formData.append("image", file)
             try {
-                const res = await axios.post(`http://localhost:3000/api/admin/sliders/add-slider`,formData,{headers : {
-                            'Content-Type': 'multipart/form-data',
-                        }
-                    }
-                )
-                if (res.data.message === "slide created"){
+                const res = await fetch(`${process.env.SERVER_URL}/api/admin/tickets/${router.query.ticketId}`, {
+                    method: "POST",
+                    body : JSON.stringify({
+                        id : adminId,
+                        answer : text
+                    })
+                })
+                const data = await res.json()
+                Nprogress.done()
+                if (data.message === "answer created") {
                     Nprogress.done()
                     await Swal.fire({
                         icon: 'success',
-                        text: "اسلاید تشکیل شد",
+                        text: "پاسخ ارسال شد",
                     })
-                    router.push("/admin/sliders")
-                }else {
+                    router.push("/admin/tickets")
+                } else {
                     Nprogress.done()
                     await Swal.fire({
                         icon: 'error',
                         text: "مشکلی در سرور ایجاد شده",
                     })
                 }
-            }catch{
+            } catch {
                 Nprogress.done()
                 await Swal.fire({
                     icon: 'error',
@@ -135,48 +87,58 @@ export default function addSlider() {
             </Breadcrumbs>
             <div className={"d-flex flex-row justify-content-center mt-4"}>
 
-                <Col xs={11} sm={11} md={8} lg={6} xl={5} className={"shadow-sm bg-white"}>
+                <Col xs={11} sm={11} md={8} lg={7} xl={7} className={"shadow-sm bg-white"}>
                     <form>
                         <div className={"d-flex flex-column align-items-center gap-3 py-5"}>
-                            <TextField
-                                className={"w-75"}
-                                label="نام اسلاید"
-                                variant="outlined"
-                                error={titleError}
-                                value={title}
-                                onInput={(event) => titleHandler(event)}/>
-                            <TextField
-                                className={"w-75"}
-                                label="متن"
-                                variant="outlined"
-                                multiline
-                                error={textError}
-                                value={text}
-                                onInput={(event) => textHandler(event)}/>
-                            <TextField
-                                select
-                                label="وضعیت"
-                                error={statusError}
-                                className={"w-75"}
-                                onChange={statusHandler}
-                                value={status}
-                            >
-                                {statusList.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
+                            <div className={"w-75"}>
+                                <span className={"align-self-start text-secondary"}>
+                                پیام کاربر :
+                                </span>
+                                <p className={"align-self-start border border-1 border-warning rounded-1 py-4 px-2 mt-2"}>
+                                    {data.comment}
+                                </p>
+                            </div>
+                            <div className={"w-75"}>
+                                <span className={"align-self-start text-secondary"}>
+                                پاسخ شما :
+                            </span>
+                                <TextField
+                                    className={"w-100 mt-2"}
+                                    label="متن"
+                                    variant="outlined"
+                                    multiline
+                                    error={textError}
+                                    disabled={!!data.answer}
+                                    value={text}
+                                    onInput={(event) => textHandler(event)}/>
+                                {
+                                    !data.answer &&
+                                        <Button onClick={submitHandler} className={"col-5 mt-5 align-self-end"} variant={"contained"}
+                                                color={"success"}>ارسال پاسخ</Button>
 
-                            <label>عکس مورد نظر را وارد کنید</label>
-                            <FileUploader handleChange={handleChange} name="file" types={fileTypes}
-                                          label={"بکشید و در این نقطه رها کنید"}/>
-                            <Button onClick={submitHandler} className={"col-8 mt-5"} variant={"contained"}
-                                    color={"success"}>افزودن</Button>
+                                }
+                            </div>
                         </div>
                     </form>
                 </Col>
             </div>
         </Container>
     )
+}
+
+export async function getServerSideProps(context) {
+    const {params, req} = context
+    const userToken = req.cookies.userToken
+    const response = await fetch(`${process.env.SERVER_URL}/page/tickets/${params.ticketId}`, {
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': `Token ${userToken}`
+        },
+    })
+    const data = await response.json()
+    return {
+        props: {data}
+    }
 }
