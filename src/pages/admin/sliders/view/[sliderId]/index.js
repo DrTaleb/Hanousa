@@ -3,7 +3,6 @@ import {Button} from "@mui/material";
 import {useRouter} from "next/router";
 
 export default function slideView({data}){
-    console.log(data)
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const router = useRouter()
     const returnLastPage = ()=> {
@@ -21,7 +20,7 @@ export default function slideView({data}){
                     متن : {data.text}
                 </p>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt={""} className={"w-100 rounded mt-3"} src={`https://server.hanousa.ir/images/${data.image}`}/>
+                <img alt={""} className={"w-100 rounded mt-3"} src={`https://storage.iran.liara.space/hanousa/static/${data.image}`}/>
             </div>
         </Container>
     )

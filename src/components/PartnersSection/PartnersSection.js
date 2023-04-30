@@ -8,7 +8,7 @@ export default function PartnersSection({data}) {
     return (
         <div className="partner-section mt-5"
              style={{
-                 background: `url(${bg.src})`,
+                 background: `#ccc`,
                  backgroundColor: "#d0bdbd"
              }}>
             <div className="text-center">

@@ -79,6 +79,7 @@ export default function MainSetting({data}) {
                         }
                     }
                 )
+                console.log(res.data)
                 if (res.data.message === "information updated"){
                     Nprogress.done()
                     await Swal.fire({

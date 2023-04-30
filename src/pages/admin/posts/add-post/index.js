@@ -8,7 +8,9 @@ import AuthContext from "@/contexts/authContext";
 import axios from "axios";
 import Nprogress from "nprogress";
 import Swal from "sweetalert2";
+import {useRouter} from "next/router";
 export default function AddPost() {
+    const router = useRouter()
     const {userData} = useContext(AuthContext)
     const adminId = userData.user_id
     const formData = new FormData();
@@ -59,9 +61,9 @@ export default function AddPost() {
                 Nprogress.done()
                 await Swal.fire({
                     icon: 'success',
-                    text: "اسلاید تشکیل شد",
+                    text: "پست تشکیل شد",
                 })
-                router.push("/admin/sliders")
+                router.push("/admin/posts")
             }else {
                 Nprogress.done()
                 await Swal.fire({

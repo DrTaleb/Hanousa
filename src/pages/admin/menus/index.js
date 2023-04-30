@@ -25,21 +25,25 @@ const columns = [
 export default function Menus() {
 
     const router = useRouter()
-    const [DATA,setDATA] = useState([])
+    const [DATA, setDATA] = useState([])
     const [getData, setGetData] = useState(false)
 
-    useEffect( ()=>{
+    useEffect(() => {
         fetch(`${process.env.LOCAL_URL}/api/admin/menus`)
             .then(res => res.json())
             .then(data => setDATA(data))
     }, [getData])
-    function createData(id, title, link, parentId , options) {
-        return {id, title,link, parentId, options};
+
+    function createData(id, title, link, parentId, options) {
+        return {id, title, link, parentId, options};
     }
 
     const rows = [];
-    DATA.map(item => rows.push(createData(`${item.id}`, `${item.title}`,`${item.link}`, `${item.parent_name}`)))
+    if (DATA.length) {
+        DATA.map(item => rows.push(createData(`${item.id}`, `${item.title}`, `${item.link}`, `${item.parent_name}`)))
 
+    }
+    console.log(DATA)
 
     const editHandler = (id) => {
         router.push(`/admin/menus/edit-menu/${id}`)
@@ -59,21 +63,21 @@ export default function Menus() {
                         method: "DELETE"
                     })
                     const data = await res.json()
-                    if (data.message === "menu deleted"){
+                    if (data.message === "menu deleted") {
                         setGetData(prev => !prev)
                         Swal.fire(
                             '',
                             "حذف با موفقیت انجام شد !",
                             'success'
                         )
-                    }else {
+                    } else {
                         Swal.fire(
                             '',
                             "مشکلی پیش آمده دوباره تلاش کنید",
                             'error'
                         )
                     }
-                }catch {
+                } catch {
                     Swal.fire(
                         '',
                         "مشکلی در سرور پیش آمده دوباره تلاش کنید",
@@ -87,9 +91,9 @@ export default function Menus() {
 
     return (
         <div className={"px-4"}>
-            <Paper className={"p-3"} sx={{width: '100%', overflow: 'hidden' , boxShadow: "0 0 1rem rgba(0, 0, 0, .1)"}}>
+            <Paper className={"p-3"} sx={{width: '100%', overflow: 'hidden', boxShadow: "0 0 1rem rgba(0, 0, 0, .1)"}}>
                 <Link href={"/admin/menus/add-menu"}>
-                    <Button className={"ps-2"} variant={"contained"} color={"success"} >افزودن منو</Button>
+                    <Button className={"ps-2"} variant={"contained"} color={"success"}>افزودن منو</Button>
                 </Link>
                 <TableContainer sx={{maxHeight: 600}}>
                     <Table stickyHeader aria-label="sticky table">
@@ -111,34 +115,34 @@ export default function Menus() {
                         </TableHead>
                         <TableBody>
                             {rows.map((row) => {
-                                    return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                                            {columns.map((column) => {
-                                                const value = row[column.id];
-                                                return (
-                                                    <TableCell key={column.id} align={column.align}  className={"fw-bold"}>
-                                                        {column.format && typeof value === 'number'
-                                                            ? column.format(value)
-                                                            : value}
-                                                    </TableCell>
-                                                );
-                                            })}
-                                            <TableCell align={"left"}  sx={{minWidth : "200px"}}>
-                                                <IconButton color={"warning"}
-                                                            onClick={() => editHandler(row.id)}
-                                                >
-                                                    <ModeEditOutlineRoundedIcon></ModeEditOutlineRoundedIcon>
-                                                </IconButton>
-                                                <IconButton color={"error"}
-                                                            onClick={()=> deleteHandler( row.id)}
-                                                >
-                                                    <DeleteIcon></DeleteIcon>
-                                                </IconButton>
-                                            </TableCell>
-                                        </TableRow>
-                                    )
-                                        ;
-                                })}
+                                return (
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                                        {columns.map((column) => {
+                                            const value = row[column.id];
+                                            return (
+                                                <TableCell key={column.id} align={column.align} className={"fw-bold"}>
+                                                    {column.format && typeof value === 'number'
+                                                        ? column.format(value)
+                                                        : value}
+                                                </TableCell>
+                                            );
+                                        })}
+                                        <TableCell align={"left"} sx={{minWidth: "200px"}}>
+                                            <IconButton color={"warning"}
+                                                        onClick={() => editHandler(row.id)}
+                                            >
+                                                <ModeEditOutlineRoundedIcon></ModeEditOutlineRoundedIcon>
+                                            </IconButton>
+                                            <IconButton color={"error"}
+                                                        onClick={() => deleteHandler(row.id)}
+                                            >
+                                                <DeleteIcon></DeleteIcon>
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                                    ;
+                            })}
                         </TableBody>
                     </Table>
                 </TableContainer>
