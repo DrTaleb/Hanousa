@@ -51,7 +51,7 @@ export default function App({Component, pageProps, data}) {
                 <AuthProvider>
                     {
                         router.pathname.slice(0,6) !== "/admin" ?
-                            <Layout data={data.menus}>
+                            <Layout data={data}>
                                 <ToastContainer className={"mt-5"}/>
                                 <Component {...pageProps} />
                             </Layout>
