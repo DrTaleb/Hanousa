@@ -2,17 +2,25 @@ import Link from "next/link";
 import ShareIcon from '@mui/icons-material/Share';
 import {Fab} from "@mui/material";
 import {useEffect, useRef} from "react";
+import Head from "next/head";
 
 export default function PostId({data}) {
 
+    console.log(data)
     const blogText = useRef()
     useEffect(()=>{
         blogText.current.innerHTML = data.text
     },[])
 
     return (
+        <>
+        <Head>
+            <title>{data.title}</title>
+            <meta name="description" content={`${data.sub_title}`}/>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <link rel="icon" href="/favicon.ico"/>
+        </Head>
         <main className="mx-auto">
-
             <div className="one blogTitle mt-5">
                 <h1>{data.title}</h1>
             </div>
@@ -73,6 +81,7 @@ export default function PostId({data}) {
                 </section>
             </section>
         </main>
+        </>
     )
 }
 

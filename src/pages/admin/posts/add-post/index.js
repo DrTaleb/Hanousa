@@ -132,7 +132,7 @@ export default function AddPost() {
                             'bold italic backcolor | alignleft aligncenter ' +
                             'alignright alignjustify | bullist numlist outdent indent | ' +
                             'removeformat | help',
-                        content_style: 'body { font-family:"vazir",sans-serif; font-size:16px; direction: rtl; }'
+                        content_style: 'body { font-family:vazir; font-size:16px; direction: rtl; }'
                     }}
                 />
                 <Button onClick={submitHandler} className={"align-self-end col-xl-4"} color={"success"} variant={"contained"}>اشتراک گذاری</Button>

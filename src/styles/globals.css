@@ -1425,7 +1425,9 @@ a{
 .blog-single .card:hover {
     transform: translateY(-5px)
 }
-
+.blog-text *{
+    font-family: vazir !important;
+}
 /* === BASE HEADING === */
 
 .blogTitle h1 {

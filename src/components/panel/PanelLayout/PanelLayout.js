@@ -7,18 +7,13 @@ import Divider from "@mui/material/Divider";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
-import AddIcon from '@mui/icons-material/Add';
 import GridViewIcon from '@mui/icons-material/GridView';
 import Link from "next/link";
 import MenuIcon from '@mui/icons-material/Menu';
 import {useRouter} from "next/router";
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import LinearScaleIcon from '@mui/icons-material/LinearScale';
-import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import AddTaskIcon from '@mui/icons-material/AddTask';
 import ListAltIcon from '@mui/icons-material/ListAlt';
-import WysiwygIcon from '@mui/icons-material/Wysiwyg';
-import RemoveModeratorIcon from '@mui/icons-material/RemoveModerator';
 import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AuthContext from "@/contexts/authContext";
@@ -45,7 +40,7 @@ export default function PanelLayout({children}) {
     };
     const toggleElement = useRef()
     const responsiveMenu = useRef()
-    const menuClick = ()=>{
+    const menuClick = () => {
         toggleElement.current.classList.toggle("active");
         responsiveMenu.current.classList.toggle("active");
     }
@@ -56,7 +51,8 @@ export default function PanelLayout({children}) {
             <nav className="navbar navbar-expand bg-main-blue py-1 fixed-top">
                 <div className="container-fluid">
                     <div className="d-flex flex-row align-items-center gap-3">
-                        <div className="panel-menu-icon active d-flex flex-column justify-content-center rounded" onClick={menuClick} ref={toggleElement}>
+                        <div className="panel-menu-icon active d-flex flex-column justify-content-center rounded"
+                             onClick={menuClick} ref={toggleElement}>
                             <MenuIcon sx={{color: "var(--white)"}}></MenuIcon>
                         </div>
                         <a className="text-decoration-none text-white" href="#">پنل مدیریت هانوسا</a>
@@ -188,7 +184,8 @@ export default function PanelLayout({children}) {
                         <div className="container">
                             <div className="d-flex flex-row justify-content-between align-items-center">
                                 <div className="d-flex flex-row align-items-center gap-2">
-                                    <Badge badgeContent={userData.is_superuser === true ? "ادمین" : "کارمند"} color="success">
+                                    <Badge badgeContent={userData.is_superuser === true ? "ادمین" : "کارمند"}
+                                           color="success">
                                         <Avatar sx={{width: 42, height: 42, color: "#fff"}}></Avatar>
                                     </Badge>
                                     <span className={"text-secondary"}>
@@ -254,17 +251,15 @@ export default function PanelLayout({children}) {
                                             {userData.name}
                                         </MenuItem>
                                         <Divider/>
-                                        {userData.is_staff &&
-                                            <MenuItem onClick={handleClose}>
-                                                <Link href={"/admin"}
-                                                      className={"text-dark text-decoration-none d-flex flex-row align-items-center"}>
-                                                    <ListItemIcon>
-                                                        <AdminPanelSettingsIcon color={"error"} fontSize="medium"/>
-                                                    </ListItemIcon>
-                                                    پنل ادمین
-                                                </Link>
-                                            </MenuItem>
-                                        }
+                                        <MenuItem onClick={handleClose}>
+                                            <Link href={"/"}
+                                                  className={"text-dark text-decoration-none d-flex flex-row align-items-center"}>
+                                                <ListItemIcon>
+                                                    <AdminPanelSettingsIcon color={"error"} fontSize="medium"/>
+                                                </ListItemIcon>
+                                                صفحه اصلی
+                                            </Link>
+                                        </MenuItem>
                                         <MenuItem onClick={handleClose}>
                                             <Link href={"/account-setting"}
                                                   className={"text-dark text-decoration-none"}>

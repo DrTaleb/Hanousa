@@ -21,7 +21,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 export default function Layout({children, data}) {
-    console.log(data)
     const parentData = data.menus.filter(item => item.parent_id === 0 && item.type === "header")
     const subData = data.menus.filter(item => item.parent_id != 0 && item.type === "header")
     const footerParentData = data.menus.filter(item => item.parent_id === 0 && item.type === "footer")
@@ -47,10 +46,10 @@ export default function Layout({children, data}) {
         <>
             <nav className="navbar-custom">
                 <section className="main-nav">
-                    <div className="d-flex justify-content-center align-items-center h-100">
+                    <div className="d-flex justify-content-center align-items-center h-100 ps-sm-5">
                         <Link href={"/"}>
                             <img src={`https://storage.iran.liara.space/hanousa/static/${data.settings[0].image}`}
-                                 alt="logo"/>
+                                 alt={`${data.settings[0].name}`}/>
                         </Link>
                         <div className="nav-menu d-flex flex-row gap-4 mx-4">
                             {parentData.map(item =>
@@ -331,7 +330,7 @@ export default function Layout({children, data}) {
 
                         <div className="col-12 offset-md-0 col-md-4 mt-4 mt-md-0">
                             <ul className="footer-social">
-                                <li>
+                                <li className={"d-flex flex-sm-row flex-column align-items-sm-center"}>
                                     <Link href={`tel:${data.settings[0].number}`} className="call-img">
                                         <img src="/img/phone-call-1.webp" alt="contact"/>
                                     </Link>
