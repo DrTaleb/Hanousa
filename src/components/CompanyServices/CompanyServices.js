@@ -1,4 +1,3 @@
-
 export default function CompanyServices() {
 
 
@@ -38,7 +37,7 @@ export default function CompanyServices() {
                                     aria-controls="panel1"
                                     aria-selected="true"
                                 >
-                                    اول
+                                    قدم اول
                                 </button>
                             </li>
                             <li className="nav-item" role="presentation">
@@ -52,7 +51,7 @@ export default function CompanyServices() {
                                     aria-controls="panel2"
                                     aria-selected="false"
                                 >
-                                    دوم
+                                    قدم دوم
                                 </button>
                             </li>
                             <li className="nav-item" role="presentation">
@@ -66,22 +65,20 @@ export default function CompanyServices() {
                                     aria-controls="panel3"
                                     aria-selected="false"
                                 >
-                                    سوم
+                                    قدم سوم
                                 </button>
                             </li>
                         </ul>
-                        <div className="tab-content pt-3" id="myTabContent">
+                        <div className="tab-content mt-3 pt-3" id="myTabContent">
                             <div
                                 className="tab-pane fade show active service-tab-pane"
                                 id="panel1"
                                 role="tabpanel"
                                 aria-labelledby="home-tab"
                             >
-                                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                                استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله
-                                در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد
-                                نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد
-                                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده
+                                چه چیزی میخواهید؟ <br/>
+                                ابتدا تمام معیار های شما در طراحی را از شما میگیریم و سپس با تیمی پر قدرت فعالیت شما را
+                                بررسی میکنیم و با استفاده از متد های روز دنیا شما را به سمت بهترین انتخاب هدایت میکنیم
                             </div>
                             <div
                                 className="tab-pane fade service-tab-pane"
@@ -89,11 +86,8 @@ export default function CompanyServices() {
                                 role="tabpanel"
                                 aria-labelledby="profile-tab"
                             >
-                                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                                استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله
-                                در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد
-                                نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد
-                                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده
+                                تمامی مراحل آرام آرام در کوتاه ترین زمان ممکن شروع به ساخت میشود تا به شما عزیزان
+                                بتوانیم بهترین خدمات را ارائه دهیم تا بتوانید پیشرفت خود، کارتان را روز به روز ببینید
                             </div>
                             <div
                                 className="tab-pane fade service-tab-pane"
@@ -101,11 +95,8 @@ export default function CompanyServices() {
                                 role="tabpanel"
                                 aria-labelledby="contact-tab"
                             >
-                                لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                                استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله
-                                در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد
-                                نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد
-                                کتابهای زیادی در شصت و سه درصد گذشته حال و آینده
+                                پس از پایان کار نیز تیم ما همراه شماست تا در صورت هر گونه اتفاق بتواند بهترین راهکار ها
+                                را به شما برای پیشرفت بهترتان بدهد کافیست با ما هم مسیر شوید و از پیشرفت لذت ببرید
                             </div>
                         </div>
                     </div>

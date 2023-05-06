@@ -46,10 +46,12 @@ export default function Layout({children, data}) {
         <>
             <nav className="navbar-custom">
                 <section className="main-nav">
-                    <div className="d-flex justify-content-center align-items-center h-100 ps-sm-5">
-                        <Link href={"/"}>
-                            <img src={`https://storage.iran.liara.space/hanousa/static/${data.settings[0].image}`}
-                                 alt={`${data.settings[0].name}`}/>
+                    <div className="d-flex justify-content-center align-items-center h-100 ps-sm-5 ps-3">
+                        <Link href={"/"} className={"img-logo"}>
+                            <img className={"w-100"}
+                                 src={`https://storage.iran.liara.space/hanousa/static/${data.settings[0].image}`}
+                                 alt={`${data.settings[0].name}`}
+                            />
                         </Link>
                         <div className="nav-menu d-flex flex-row gap-4 mx-4">
                             {parentData.map(item =>

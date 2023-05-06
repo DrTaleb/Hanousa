@@ -1,5 +1,4 @@
-import React, {useRef, useState} from 'react';
-import { Editor } from '@tinymce/tinymce-react';
+import React, {useEffect, useRef, useState} from 'react';
 import TextField from "@mui/material/TextField";
 import {Button} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
@@ -8,6 +7,7 @@ import axios from "axios";
 import Nprogress from "nprogress";
 import Swal from "sweetalert2";
 import {useRouter} from "next/router";
+import TextEditor from "@/components/TextEditor";
 export default function EditPost({data}) {
     const router = useRouter()
     const formData = new FormData();
@@ -15,7 +15,6 @@ export default function EditPost({data}) {
     const [subtitle, setSubTitle] = useState(data.sub_title)
     const [status, setStatus] = useState(data.status)
     const [text, setText] = useState(data.text)
-    const editorRef = useRef(null);
     const statusList = [
         {
             value: 1,
@@ -43,8 +42,12 @@ export default function EditPost({data}) {
     const handleChange = (file) => {
         setFile(file);
     };
+    const [editorLoaded, setEditorLoaded] = useState(false);
+    useEffect(() => {
+        setEditorLoaded(true);
+    }, []);
     const submitHandler = async ()=>{
-        const text = await editorRef.current.getContent()
+        Nprogress.start()
         await formData.append("text", text)
         await formData.append("title" , title)
         await formData.append("sub_title" , subtitle)
@@ -117,23 +120,13 @@ export default function EditPost({data}) {
                 <label>عکس پست</label>
                 <FileUploader  handleChange={handleChange} name="file" types={fileTypes}
                                label={"بکشید و در این نقطه رها کنید"}/>
-                <Editor
-                    initialValue={text}
-                    onInit={(evt, editor) => editorRef.current = editor}
-                    init={{
-                        height: 500,
-                        menubar: false,
-                        plugins: [
-                            'advlist autolink lists charmap print preview anchor',
-                            'searchreplace visualblocks code fullscreen',
-                            'media table paste code help wordcount'
-                        ],
-                        toolbar: 'undo redo | formatselect | ' +
-                            'bold italic backcolor | alignleft aligncenter ' +
-                            'alignright alignjustify | bullist numlist outdent indent | ' +
-                            'removeformat | help',
-                        content_style: 'body { font-family:"vazir",sans-serif; font-size:16px; direction: rtl; }'
+                <TextEditor
+                    name="description"
+                    value={text}
+                    onChange={(data) => {
+                        setText(data);
                     }}
+                    editorLoaded={editorLoaded}
                 />
                 <Button onClick={submitHandler} className={"align-self-end col-xl-4"} color={"success"} variant={"contained"}>اشتراک گذاری</Button>
             </div>

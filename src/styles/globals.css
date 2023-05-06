@@ -10,7 +10,10 @@
     font-style: normal;
     font-display: swap;
 }
-
+.text-justify{
+    text-align: justify;
+    text-justify: inter-word;
+}
 /* Css reset */
 * {
     box-sizing: border-box;
@@ -659,9 +662,6 @@ a {
     line-height: 1.3;
 }
 
-.items-card p {
-    text-align: right;
-}
 
 .items-card h4::after {
     clear: both;
@@ -836,7 +836,7 @@ a{
 }
 
 .overlay-info p {
-    padding: 0 70px 140px;
+    padding: 0 70px 50px;
 }
 
 /* Company Section */
@@ -1427,6 +1427,19 @@ a{
 }
 .blog-text *{
     font-family: vazir !important;
+}
+.blog-text table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+.blog-text td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+.ck-editor__editable {
+    min-height: 500px;
 }
 /* === BASE HEADING === */
 

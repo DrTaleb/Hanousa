@@ -9,6 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-basic-styles": "^37.1.0",
+    "@ckeditor/ckeditor5-build-classic": "^37.1.0",
+    "@ckeditor/ckeditor5-core": "^37.1.0",
+    "@ckeditor/ckeditor5-editor-classic": "^37.1.0",
+    "@ckeditor/ckeditor5-essentials": "^37.1.0",
+    "@ckeditor/ckeditor5-paragraph": "^37.1.0",
     "@ckeditor/ckeditor5-react": "^6.0.0",
     "@emotion/cache": "^11.10.7",
     "@emotion/react": "^11.10.6",

@@ -17,7 +17,7 @@ export default function MainPostSection({data}) {
                  }}>
             <div className="overlay">
                 <div className="text-content">
-                    <h1><span> اخرین </span>پست های ما</h1>
+                    <h1><span> اخرین </span>مقاله های ما</h1>
                 </div>
                 <div className="container mt-5 mb-3">
                     <Swiper

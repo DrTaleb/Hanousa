@@ -1,5 +1,4 @@
-import React, {useContext, useRef, useState} from 'react';
-import { Editor } from '@tinymce/tinymce-react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import TextField from "@mui/material/TextField";
 import {Button} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
@@ -9,7 +8,10 @@ import axios from "axios";
 import Nprogress from "nprogress";
 import Swal from "sweetalert2";
 import {useRouter} from "next/router";
+import TextEditor from "@/components/TextEditor";
 export default function AddPost() {
+
+
     const router = useRouter()
     const {userData} = useContext(AuthContext)
     const adminId = userData.user_id
@@ -17,7 +19,7 @@ export default function AddPost() {
     const [title, setTitle] = useState("")
     const [subtitle, setSubTitle] = useState("")
     const [status, setStatus] = useState("")
-    const editorRef = useRef(null);
+    const [text , setText] = useState("")
     const statusList = [
         {
             value: 1,
@@ -28,13 +30,13 @@ export default function AddPost() {
             label: "غیر فعال"
         }
     ]
-    const titleHandler = (event)=>{
+    const titleHandler = (event) => {
         setTitle(event.target.value)
     }
-    const subtitleHandler = (event)=>{
+    const subtitleHandler = (event) => {
         setSubTitle(event.target.value)
     }
-    const statusHandler = (event)=>{
+    const statusHandler = (event) => {
         setStatus(event.target.value)
     }
     const [file, setFile] = useState(null);
@@ -42,36 +44,44 @@ export default function AddPost() {
     const handleChange = (file) => {
         setFile(file);
     };
-    const submitHandler = async ()=>{
-        const text = editorRef.current.getContent()
+
+
+    const [editorLoaded, setEditorLoaded] = useState(false);
+    useEffect(() => {
+        setEditorLoaded(true);
+    }, []);
+
+    const submitHandler = async () => {
+        Nprogress.start()
         await formData.append("text", text)
-        await formData.append("title" , title)
-        await formData.append("sub_title" , subtitle)
+        await formData.append("title", title)
+        await formData.append("sub_title", subtitle)
         await formData.append("image", file)
-        await formData.append("status" , status)
-        await formData.append("id" , adminId)
+        await formData.append("status", status)
+        await formData.append("id", adminId)
         try {
-            const res = await axios.post(`${process.env.LOCAL_URL}/api/admin/posts/add-post`,formData,{headers : {
+            const res = await axios.post(`${process.env.LOCAL_URL}/api/admin/posts/add-post`, formData, {
+                    headers: {
                         'Content-Type': 'multipart/form-data',
                     }
                 }
             )
             console.log(res.data)
-            if (res.data.message === "post created"){
+            if (res.data.message === "post created") {
                 Nprogress.done()
                 await Swal.fire({
                     icon: 'success',
                     text: "پست تشکیل شد",
                 })
                 router.push("/admin/posts")
-            }else {
+            } else {
                 Nprogress.done()
                 await Swal.fire({
                     icon: 'error',
                     text: "مشکلی در سرور ایجاد شده",
                 })
             }
-        }catch{
+        } catch {
             Nprogress.done()
             await Swal.fire({
                 icon: 'error',
@@ -80,8 +90,6 @@ export default function AddPost() {
         }
 
     }
-
-
 
 
     return (
@@ -93,14 +101,14 @@ export default function AddPost() {
                         label="عنوان"
                         value={title}
                         onChange={titleHandler}
-                        variant="outlined" />
+                        variant="outlined"/>
                     <TextField
                         className={"col-md-5 col-12 content h-100"}
                         multiline={true}
                         value={subtitle}
                         onChange={subtitleHandler}
                         label="توصیف پست بصورت کوتاه"
-                        variant="outlined" />
+                        variant="outlined"/>
                     <TextField
                         select
                         label="وضعیت"
@@ -116,26 +124,18 @@ export default function AddPost() {
                     </TextField>
                 </div>
                 <label>عکس پست</label>
-                <FileUploader  handleChange={handleChange} name="file" types={fileTypes}
+                <FileUploader handleChange={handleChange} name="file" types={fileTypes}
                               label={"بکشید و در این نقطه رها کنید"}/>
-                <Editor
-                    onInit={(evt, editor) => editorRef.current = editor}
-                    init={{
-                        height: 500,
-                        menubar: false,
-                        plugins: [
-                            'advlist autolink lists charmap print preview anchor',
-                            'searchreplace visualblocks code fullscreen',
-                            'media table paste code help wordcount'
-                        ],
-                        toolbar: 'undo redo | formatselect | ' +
-                            'bold italic backcolor | alignleft aligncenter ' +
-                            'alignright alignjustify | bullist numlist outdent indent | ' +
-                            'removeformat | help',
-                        content_style: 'body { font-family:vazir; font-size:16px; direction: rtl; }'
+                <TextEditor
+                    name="description"
+                    value={text}
+                    onChange={(data) => {
+                        setText(data);
                     }}
+                    editorLoaded={editorLoaded}
                 />
-                <Button onClick={submitHandler} className={"align-self-end col-xl-4"} color={"success"} variant={"contained"}>اشتراک گذاری</Button>
+                <Button onClick={submitHandler} className={"align-self-end col-xl-4"} color={"success"}
+                        variant={"contained"}>اشتراک گذاری</Button>
             </div>
         </div>
     );
