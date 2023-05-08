@@ -216,7 +216,7 @@ a {
     bottom: 0;
     left: -100%;
     display: flex;
-    transition: 0.6s;
+    transition: 0.3s;
     justify-content: flex-start;
     direction: rtl;
 
@@ -494,26 +494,19 @@ a {
     color: #2c3034;
 }
 
-.layout .sidebar .menu .menu-item a:hover .menu-icon i {
-    animation: swing ease-in-out 0.5s 1 alternate;
-}
-
-.layout .sidebar .menu .menu-item a:hover::after {
-    border-color: #dee2ec !important;
-}
 
 .layout .sidebar .menu .menu-item.sub-menu {
     position: relative;
 }
 
-.layout .sidebar .menu .menu-item.sub-menu > a::after {
+.layout .sidebar .menu .menu-item.sub-menu.active > a::after {
     content: "";
     transition: transform 0.3s;
     border-right: 2px solid currentcolor;
     border-bottom: 2px solid currentcolor;
     width: 5px;
     height: 5px;
-    transform: rotate(-45deg);
+    transform: rotate(45deg);
 }
 
 .layout .sidebar .menu .menu-item.sub-menu > .sub-menu-list {

@@ -9,17 +9,18 @@ export default function SideBarItem({menuID,menuTitle, menuLink, subMenus}){
             myHideClass==="sub-hide" ? setHideClass("") : setHideClass("sub-hide")
         }
     }
+    const relatedSubMenus = subMenus.filter(item => item.parent_id === menuID)
     return(
         <Fragment>
-            <li onClick={subMenuHandler} className={"menu-item sub-menu cursor-pointer"}>
+            <li onClick={subMenuHandler} className={`menu-item sub-menu cursor-pointer ${relatedSubMenus.length && "active"}`}>
                 <Link href={menuLink} className={"text-decoration-none text-dark"}>
                     <span className="menu-title main-menu-title">{menuTitle}</span>
                 </Link>
                 <div className={`side-bar-sub-menu ${myHideClass}`}>
                     <ul className="sub-ul">
-                        {subMenus.map((item)=>
+                        {relatedSubMenus.map((item)=>
                             <li key={item.id} className="menu-item">
-                                <Link href={item.link} className={"text-decoration-none text-dark"}>
+                                <Link href={item.link} className={"text-decoration-none text-dark border-start border-3 ms-4"}>
                                     <span className="menu-title">{item.title}</span>
                                 </Link>
                             </li>

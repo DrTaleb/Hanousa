@@ -19,8 +19,10 @@ import {Logout, PersonAdd, Settings} from "@mui/icons-material";
 import SideBarItem from "@/components/SideBarItem";
 import MenuIcon from "@mui/icons-material/Menu";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import {useRouter} from "next/router";
 
 export default function Layout({children, data}) {
+    const router = useRouter()
     const parentData = data.menus.filter(item => item.parent_id === 0 && item.type === "header")
     const subData = data.menus.filter(item => item.parent_id != 0 && item.type === "header")
     const footerParentData = data.menus.filter(item => item.parent_id === 0 && item.type === "footer")
@@ -32,6 +34,11 @@ export default function Layout({children, data}) {
         responsiveMenu.current.classList.toggle("active");
     }
     const {logOut, userData} = useContext(AuthContext)
+
+    useEffect(()=>{
+        toggleElement.current.classList.remove("active");
+        responsiveMenu.current.classList.remove("active");
+    },[router.pathname])
 
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -288,7 +295,7 @@ export default function Layout({children, data}) {
                                             </Menu>
                                         </>
                                         :
-                                        <Link href={"/login"} className={"ms-3 d-block d-md-none"}>
+                                        <Link href={"/login"} className={"ms-3 d-block d-md-none text-decoration-none"}>
                                             <Button variant={"contained"} color={"error"}>ورود / ثبت نام</Button>
                                         </Link>
                                     }
