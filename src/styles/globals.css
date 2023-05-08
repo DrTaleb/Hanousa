@@ -14,6 +14,11 @@
     text-align: justify;
     text-justify: inter-word;
 }
+@media (max-width: 600px) {
+    .toast-container-size{
+        width: 79% !important;
+    }
+}
 /* Css reset */
 * {
     box-sizing: border-box;
@@ -806,11 +811,10 @@ a{
 .info {
     color: #ffffff;
     /*background-image: url(../assets/bckg-4.jpg);*/
-    /* min-height: 380px; */
+     min-height: 500px;
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
-    background-position: 50% 50%;
     position: relative;
 }
 
@@ -844,7 +848,7 @@ a{
     margin-top: 100px;
 }
 
-.company-services .header-services {
+.header-services {
     text-align: center;
 }
 
@@ -853,17 +857,17 @@ a{
     text-justify: inter-word;
 }
 
-.company-services .header-services h4 {
+.header-services h4 {
     color: #707070;
     font-size: 33px;
     padding-bottom: 10px;
 }
 
-.company-services .header-services {
+.header-services {
     color: #999;
 }
 
-.company-services .header-services span {
+.header-services span {
     color: rgb(234, 79, 79);
 }
 

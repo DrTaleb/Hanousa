@@ -4,7 +4,7 @@ export default function CompanyServices() {
     return (
         <section className="company-services">
             <div className="header-services">
-                <h4>در خدمت شما <span>24/7</span></h4>
+                <h4> <span>۱۰۰٪</span> آماده برای طراحی تا پشتیبانی سایت شما</h4>
                 <em>
                     همه چیزهایی را که برای راه‌اندازی وب‌سایت جدید خود در کوتاه‌ترین زمان
                     نیاز دارید، دارد
@@ -16,7 +16,7 @@ export default function CompanyServices() {
             <div className="container">
                 <div className="row mt-5 mb-5">
                     <div className="col-12 col-md-6 img-container-mac">
-                        <img className="mac-img" src="/img/flex-mac-right.jpg" alt="mac"/>
+                        <img className="mac-img" src="/img/photo_2023-05-06+15.54.54.webp" alt="mac"/>
                     </div>
                     <div
                         className="col-12 mt-4 mt-md-0 col-md-4 d-flex flex-column offset-0 offset-md-1 navtabs-container"

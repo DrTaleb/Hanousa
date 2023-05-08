@@ -121,7 +121,7 @@ export default function Login() {
 
 
     return (
-        <div className="login-parent d-flex flex-row justify-content-center w-100 h-100 align-items-center ">
+        <div className="login-parent d-flex flex-row justify-content-center w-100 vh-100 align-items-center ">
             <div className="login-modal-container my-5" id="container" ref={containerRef}>
                 <div className="form-container sign-up-container">
                     <form className="login-modal-form login-form d-none" ref={loginFormRef}>

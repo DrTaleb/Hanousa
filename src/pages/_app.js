@@ -50,16 +50,18 @@ export default function App({Component, pageProps, data}) {
             <ThemeProvider theme={theme}>
                 <AuthProvider>
                     {
-                        router.pathname.slice(0,6) !== "/admin" ?
-                            <Layout data={data}>
-                                <ToastContainer className={"mt-5"}/>
-                                <Component {...pageProps} />
-                            </Layout>
-                            :
-                            <PanelLayout>
-                                <ToastContainer className={"mt-5"}/>
-                                <Component {...pageProps} />
-                            </PanelLayout>
+                        router.pathname === "/404" || router.pathname === "/login" ?
+                            <Component {...pageProps} /> :
+                            router.pathname.slice(0,6) !== "/admin" ?
+                                <Layout data={data}>
+                                    <ToastContainer className={"mt-5 toast-container-size"}/>
+                                    <Component {...pageProps} />
+                                </Layout>
+                                :
+                                <PanelLayout>
+                                    <ToastContainer className={"mt-5"}/>
+                                    <Component {...pageProps} />
+                                </PanelLayout>
                     }
                 </AuthProvider>
             </ThemeProvider>

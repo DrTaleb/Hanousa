@@ -1,4 +1,4 @@
-import bg from "./background/bckg-4.jpg"
+import bg from "./background/photo_2023-05-07+17.46.36.webp"
 export default function MoreInfoSection(){
 
 
@@ -7,6 +7,7 @@ export default function MoreInfoSection(){
                  style={{
                      background: `url(${bg.src})`,
                      backgroundAttachment: "fixed",
+                     backgroundPosition : "top",
                      backgroundRepeat: "no-repeat",
                      backgroundSize: "cover"
                  }}>

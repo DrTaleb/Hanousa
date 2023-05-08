@@ -61,7 +61,7 @@ export default function Layout({children, data}) {
                                     {
                                         subData.filter(data => data.parent_id === item.id).length ?
                                             <div className={"dropdown-menu pt-4 bg-none shadow-none border-0"}>
-                                                <ul className="dropdown-menu border-0">
+                                                <ul className="dropdown-menu shadow border-0">
                                                     {subData.filter(data => data.parent_id === item.id).map(subItem =>
                                                         <li key={subItem.id}>
                                                             <Link className="dropdown-item"
@@ -352,7 +352,7 @@ export default function Layout({children, data}) {
                 </div>
                 <img
                     className="position-absolute arrow-left"
-                    src="/img/arrow-2-1.png"
+                    src="/img/arrow-2-1.webp"
                     alt="arrow"
                 />
                 <div className="container p-3 pt-4 middle-footer">
@@ -393,7 +393,7 @@ export default function Layout({children, data}) {
                     </div>
                 </div>
                 <img
-                    src="/img/arrow-3.png"
+                    src="/img/arrow-3.webp"
                     className="d-none d-lg-block arrow-right"
                     alt="arrow"
                 />

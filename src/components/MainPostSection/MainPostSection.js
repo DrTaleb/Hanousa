@@ -6,7 +6,13 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import {Button} from "@mui/material";
 import Link from "next/link";
+import {useRouter} from "next/router";
+
 export default function MainPostSection({data}) {
+    const router = useRouter()
+    const linkToBlog = (id) => {
+        router.push(`/post/${id}`)
+    }
     return (
         <section className="parallax mt-5"
                  style={{
@@ -42,42 +48,47 @@ export default function MainPostSection({data}) {
                         }}
                         spaceBetween={60}
                         navigation={true}
-                        modules={[Navigation , Autoplay]}
+                        modules={[Navigation, Autoplay]}
                         className="mySwiper w-100"
                     >
-                        {data.map((item , index) =>
+                        {data.map((item, index) =>
                             <SwiperSlide key={index}>
-                            <div className="card">
-                                <Link href={`post/${item.id}`}>
-                                    <img
-                                        src={item.image_url}
-                                        className="card-img-top my-card-image"
-                                        alt={item.title}
-                                    />
-                                </Link>
-                                <div
-                                    className="card-body d-flex justify-content-between flex-column"
-                                >
-                                    <h5 className="card-title">{item.title}</h5>
-                                    <p className="card-text">
-                                        {item.sub_title}
-                                    </p>
-                                    <span>
+                                <div className="card rounded-4">
+                                    <Link href={`post/${item.id}`}>
+                                        <img
+                                            src={item.image_url}
+                                            className="card-img-top my-card-image"
+                                            alt={item.title}
+                                        />
+                                    </Link>
+                                    <div
+                                        className="card-body d-flex justify-content-between flex-column"
+                                    >
+                                        <h5 className="card-title">{item.title}</h5>
+                                        <p className="card-text">
+                                            {item.sub_title}
+                                        </p>
+                                        <span>
 
                                     </span>
-                                    <Link href={`/post/${item.id}`} className={"text-decoration-none"}>
-                                        <Button variant={"outlined"} color={"error"}>ادامه پست</Button>
-                                    </Link>
+                                        <Button
+                                            variant={"contained"}
+                                            color={"error"}
+                                            className={"align-self-end"}
+                                            onClick={()=> linkToBlog(item.id)}
+
+                                        >ادامه پست</Button>
+                                    </div>
                                 </div>
-                            </div>
-                        </SwiperSlide>)
+                            </SwiperSlide>)
                         }
 
                     </Swiper>
                 </div>
                 <div className="cta-btn pb-5">
                     <Link href={"/posts/1"}>
-                        <Button variant={"contained"} color={"error"} className="col-6 col-md-4 col-lg-3 col-xl-2 mt-4">بیشتر</Button>
+                        <Button variant={"contained"} color={"error"}
+                                className="col-6 col-md-4 col-lg-3 col-xl-2 mt-4">بیشتر</Button>
                     </Link>
                 </div>
             </div>

@@ -1,8 +1,17 @@
-export default function DetailsSection(){
+export default function DetailsSection() {
 
 
-    return(
-        <div className="container-fluid container-lg mt-4 details-container">
+    return (
+        <div className="container-fluid container-lg mt-4 details-container p-0">
+            <div className="header-services mb-4">
+                <h4>خدمات دیگر شرکت ما</h4>
+                <em>
+                    گروه هانوسا با تعهد بالا پاسخگوی درخواست های شماست
+                </em>
+                <div className="line-border mt-4">
+                    <span></span>
+                </div>
+            </div>
             <div className="row">
                 <div className="col-12 col-md-5 col-lg-4 mt-5">
                     <ul
@@ -21,7 +30,7 @@ export default function DetailsSection(){
                                 aria-controls="home-tab-pane"
                                 aria-selected="true"
                             >
-                                Home
+                                دیجیتال مارکتینگ
                             </button>
                         </li>
                         <li className="nav-item" role="presentation">
@@ -35,7 +44,7 @@ export default function DetailsSection(){
                                 aria-controls="profile-tab-pane"
                                 aria-selected="false"
                             >
-                                Profile
+                                سئو
                             </button>
                         </li>
                         <li className="nav-item" role="presentation">
@@ -49,7 +58,7 @@ export default function DetailsSection(){
                                 aria-controls="contact-tab-pane"
                                 aria-selected="false"
                             >
-                                Contact
+                                پخش تراکت
                             </button>
                         </li>
                     </ul>
@@ -61,11 +70,9 @@ export default function DetailsSection(){
                             aria-labelledby="home-tab"
                             tabIndex="0"
                         >
-                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در
-                            ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز
-                            و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد کتابهای
-                            زیادی در شصت و سه درصد گذشته حال و آینده شناخته
+                            تیم ما در زمینه دیجیتال مارکتینگ، طراحی وب و بازاریابی آفلاین فعالیت دارد. با استفاده از
+                            تجربه و دانش فنی، ما قادر به ارائه راهکارهایی شخصی‌سازی شده و با کیفیت بالا برای شما هستیم.
+                            با همکاری ما، می‌توانید به اهداف تجاری خود نزدیک شوید.
                         </div>
                         <div
                             className="tab-pane fade details-tabs"
@@ -74,11 +81,11 @@ export default function DetailsSection(){
                             aria-labelledby="profile-tab"
                             tabIndex="0"
                         >
-                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در
-                            ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز
-                            و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد کتابهای
-                            زیادی در شصت و سه درصد گذشته حال و آینده شناخته
+                            هر روز، میلیاردها نفر از سراسر جهان به دنبال اطلاعات و خدمات مختلف در اینترنت جستجو می‌کنند.
+                            برای رسیدن به این جمعیت بزرگ، وب سایت شما نیاز به محتوایی با کیفیت و حرفه‌ای دارد که مخاطبان
+                            را جذب کند. در این راستا، تولید محتوای مناسب و بهینه شده برای سئو، از اهمیت بالایی برخوردار
+                            است.
+
                         </div>
                         <div
                             className="tab-pane fade details-tabs"
@@ -87,11 +94,11 @@ export default function DetailsSection(){
                             aria-labelledby="contact-tab"
                             tabIndex="0"
                         >
-                            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در
-                            ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز
-                            و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد کتابهای
-                            زیادی در شصت و سه درصد گذشته حال و آینده شناخته
+                            هرچند دنیا به سمت عصر دیجیتال بسیار پیشگام می باشد اما این نکته نیز حائز اهمیت می باشد که
+                            روش سنتی تبلیغات هنوز در ایران پابر جاست و هنوز بازار هدف و مشتری خود را دارد
+                            مجموعه هانوسا با در نظر گرفتن تمام موارد تبلیغاتی تیمی متشکل از بازاریابان حرفه ای و پخش
+                            کنندگان در عرصه تراکت را نیز به کار گرفته تا بتوانند برای شغل شما بیشترین بازخورد را به عمل
+                            بیاورد
                         </div>
                     </div>
                 </div>
@@ -107,16 +114,15 @@ export default function DetailsSection(){
                             />
                         </svg>
                     </div>
-                    <h4 className="details-header">شرکت فلکس</h4>
+                    <h4 className="details-header">با ما تماس بگیرید</h4>
                     <p className="details-content">
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                        استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در
+                        در صورت داشتن هر گونه ابهام یا درخواست برای همکاری با ورود به بخش تماس با ما با ارتباط برقرار کنید.
                     </p>
                 </div>
                 <div className="col-12 col-md-3 col-lg-3">
                     <img
                         className="iphone-img rounded"
-                        src="/img/flex-iPhone6-hand-FrontView-2.png"
+                        src="/img/Group 6_1_11zon.webp"
                         alt="phone"
                     />
                 </div>

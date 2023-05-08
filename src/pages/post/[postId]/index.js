@@ -3,15 +3,22 @@ import ShareIcon from '@mui/icons-material/Share';
 import {Fab} from "@mui/material";
 import {useEffect, useRef} from "react";
 import Head from "next/head";
+import {useRouter} from "next/router";
+import {toast} from "react-toastify";
 
 export default function PostId({data}) {
 
-    console.log(data)
+    const router = useRouter()
     const blogText = useRef()
     useEffect(()=>{
         blogText.current.innerHTML = data.text
     },[])
 
+    console.log(router)
+    const copyLink = ()=>{
+        navigator.clipboard.writeText(`${process.env.LOCAL_URL}/post/${data.id}`);
+        toast.success("لینک مقاله کپی شد")
+    }
     return (
         <>
         <Head>
@@ -49,7 +56,7 @@ export default function PostId({data}) {
                         </picture>
                         <div className={"col-12 mt-4"}>
                             <span className={"fw-bold"}>
-                                مقاله از :  {data.author__name}
+                                به قلم :  {data.author__name}
                             </span>
                         </div>
                         <div ref={blogText} className={"col-12 mt-5 blog-text"}>
@@ -71,8 +78,8 @@ export default function PostId({data}) {
                     </div>
                     <div className="col-12 col-lg-2">
                         <div className="position-relative h-100">
-                            <nav className="my-sticky-top pt-5">
-                                <Fab size="medium" aria-label="add">
+                            <nav className="my-sticky-top pt-2 pb-5 pt-sm-5">
+                                <Fab size="medium" aria-label="add" onClick={copyLink}>
                                     <ShareIcon></ShareIcon>
                                 </Fab>
                             </nav>
